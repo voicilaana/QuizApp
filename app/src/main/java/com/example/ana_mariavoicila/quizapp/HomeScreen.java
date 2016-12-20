@@ -6,28 +6,41 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.app.Activity;
+import android.app.Dialog;
+import android.widget.Toast;
+
 
 public class HomeScreen extends AppCompatActivity {
 
+    Button buttonLogin, buttonRegister;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //POINT 1: create the register SQL database & lister on click for login and register
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        final Button buttonStart = (Button) findViewById(R.id.buttonStart);
-        final Button buttonRegister = (Button) findViewById(R.id.buttonRegister);
-        final Button buttonLeaderboard = (Button) findViewById(R.id.buttonLeaderboard);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home_screen);
 
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent registerIntent = new Intent(HomeScreen.this,Register.class);
-                HomeScreen.this.startActivity(registerIntent);
+        buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        buttonRegister = (Button) findViewById(R.id.buttonRegister);
+
+        buttonRegister.setOnClickListener(new View.OnClickListener(){
+            public void onClick (View v) {
+                Intent intentRegister = new Intent(getApplicationContext(),Register.class);
+                startActivity(intentRegister);
             }
         });
     }
 
-    private void playGame() {
-        System.out.println("Works");
+    public void login (View v)
+    {
+        final Dialog dialog = new Dialog(HomeScreen.this);
+
     }
+
 }

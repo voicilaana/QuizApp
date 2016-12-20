@@ -17,7 +17,6 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/etUserName"
-        android:layout_below="@+id/etLName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
