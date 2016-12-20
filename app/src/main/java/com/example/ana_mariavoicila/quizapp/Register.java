@@ -12,7 +12,6 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        final EditText etLName = (EditText) findViewById(R.id.etLName);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final EditText etUsername = (EditText) findViewById(R.id.etUserName);
         final Button buttonRegister = (Button) findViewById(R.id.buttonRegister);

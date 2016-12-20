@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class HomeScreen extends AppCompatActivity {
 
-    Button buttonLogin, buttonRegister;
+    Button buttonLogin, buttonRegister, buttonStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +23,25 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
-
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
+        buttonStart = (Button) findViewById(R.id.buttonStart);
 
         buttonRegister.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v) {
-                Intent intentRegister = new Intent(getApplicationContext(),Register.class);
+                Intent intentRegister = new Intent(getApplicationContext(), Register.class);
                 startActivity(intentRegister);
             }
         });
+
+        buttonStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentStart = new Intent(getApplicationContext(), QuizQuestions.class);
+                startActivity(intentStart);
+            }
+        });
+
     }
 
     public void login (View v)

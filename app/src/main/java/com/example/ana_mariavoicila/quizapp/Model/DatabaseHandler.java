@@ -1,5 +1,6 @@
 package com.example.ana_mariavoicila.quizapp.Model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -75,4 +76,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void addUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_USER_ID, user.getId());
+        values.put(KEY_USER_NAME, user.getUserName());
+        values.put(KEY_USER_PW, user.getPassWord());
+        values.put(KEY_NAME, user.getName());
+        values.put(KEY_SCORE, user.getScore());
+
+        db.insert(TABLE_USERS, null, values);
+    }
+
+    public boolean isValidUsername(String username) {
+        return false;
+    }
+
+    public boolean isLoggedIn(String userName, String password) {
+        return false;
+    }
+
+    // creem user (verificam daca username-ul exista) -> daca exista sugeram sa login sau sa aleaga altul
+    // SAU
+    // ne logam -> verificam username & parola
+
+    // getName for a userName
+    // getQuestions && getAnswers -> concurently create new question objects
 }
