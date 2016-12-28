@@ -10,9 +10,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.ana_mariavoicila.quizapp.HomeScreen">
 
+    <Button
+        android:text="@string/LeaderBoardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonLeaderboard"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
 
     <Button
-        android:text="Start your quiz"
+        android:text="@string/StartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonStart"
@@ -25,32 +36,7 @@
         style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
 
     <Button
-        android:text="Leaderboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonLeaderboard"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
-
-    <Button
-        android:text="Start your quiz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:layout_above="@+id/buttonLeaderboard"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
-
-    <Button
-        android:text="Register"
+        android:text="@string/RegisterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonRegister"

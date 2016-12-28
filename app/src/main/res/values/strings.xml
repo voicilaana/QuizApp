@@ -1,9 +1,20 @@
 <resources>
     <string name="app_name">QuizApp</string>
-    <string name="title_activity_question_menu">QuestionMenu</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <!-- Home Activity -->
     <string name="action_settings">Settings</string>
+    <string name="RegisterButton">Register</string>
+    <string name="StartButton">Start Quiz</string>
+    <string name="LeaderBoardButton">See Leaderboard</string>
+
+    <!-- Questions Activity -->
+    <string name="question">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
+    <string name="answer1">1</string>
+    <string name="answer2">2</string>
+    <string name="answer3">3</string>
+    <string name="answer4">4</string>
+    <string name="cheat">Cheat</string>
+    <string name="username">username</string>
+    <string name="score">0</string>
+    <string name="skip">Skip</string>
 </resources>
