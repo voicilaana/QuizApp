@@ -1,23 +1,18 @@
 package com.example.ana_mariavoicila.quizapp.Model;
 
-/**
- * Created by ana-mariavoicila on 20/12/2016.
- */
-
 public class User {
 
-    int id;
-    String name;
-    String userName;
-    String passWord;
-    double score;
+    private int id;
+    private String name;
+    private String userName;
+    private String passWord;
+    private double score;
 
-    public User(int id, String name, String userName, String passWord, double score) {
-        this.id = id;
+    public User(String name, String userName, String passWord) {
         this.name = name;
         this.userName = userName;
         this.passWord = passWord;
-        this.score = score;
+        this.score = 0;
     }
 
     public int getId() {

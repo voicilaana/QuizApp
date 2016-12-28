@@ -12,34 +12,52 @@
 
 
     <Button
-        android:text="Register"
+        android:text="Start your quiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonStart"
-        android:id="@+id/buttonRegister"
-        android:layout_alignRight="@+id/buttonStart"
-        android:layout_alignEnd="@+id/buttonStart"
-        android:layout_alignLeft="@+id/buttonStart"
-        android:layout_alignStart="@+id/buttonStart" />
+        android:id="@+id/buttonStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:layout_above="@+id/buttonLeaderboard"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
 
     <Button
         android:text="Leaderboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonLeaderboard"
-        android:layout_below="@+id/buttonRegister"
-        android:layout_alignRight="@+id/buttonRegister"
-        android:layout_alignEnd="@+id/buttonRegister"
-        android:layout_alignLeft="@+id/buttonRegister"
-        android:layout_alignStart="@+id/buttonRegister" />
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
 
     <Button
         android:text="Start your quiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="146dp"
-        android:id="@+id/buttonStart"
+        android:id="@+id/button"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/buttonLeaderboard"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
+
+    <Button
+        android:text="Register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonRegister"
+        android:layout_below="@+id/buttonLeaderboard"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle" />
 </RelativeLayout>

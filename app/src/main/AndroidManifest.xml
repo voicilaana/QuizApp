@@ -18,10 +18,6 @@
         <activity android:name=".Login" />
         <activity android:name=".Register" />
         <activity android:name=".QuizQuestions" />
-        <activity
-            android:name=".QuestionMenu"
-            android:label="@string/title_activity_question_menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

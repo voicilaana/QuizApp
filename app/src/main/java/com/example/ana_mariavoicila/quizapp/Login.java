@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.ana_mariavoicila.quizapp.Model.InputValidator;
+
 public class Login extends AppCompatActivity {
 
     @Override

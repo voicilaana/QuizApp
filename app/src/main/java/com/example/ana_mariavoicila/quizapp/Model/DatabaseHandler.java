@@ -1,15 +1,16 @@
 package com.example.ana_mariavoicila.quizapp.Model;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.example.ana_mariavoicila.quizapp.QuizQuestions;
 
 import java.security.PrivateKey;
-
-/**
- * Created by ana-mariavoicila on 20/12/2016.
- */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -18,7 +19,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String TABLE_USERS = "Users";
     private static final String KEY_USER_ID = "U_id";
-    private static final String KEY_NAME = "name";
     private static final String KEY_USER_NAME = "userName";
     private static final String KEY_USER_PW = "userPw";
     private static final String KEY_SCORE = "score";
@@ -34,21 +34,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS +
             "(" +
-            KEY_USER_ID + " int NOT NULL," +
-            KEY_NAME + " varchar(100)," +
-            KEY_USER_NAME + " varchar(100) NOT NULL," +
-            KEY_USER_PW + " varchar(64) NOT NULL," +
-            KEY_SCORE + " double" +
-            ");";
+            KEY_USER_ID + " int NOT NULL AUTO_INCREMENT, " +
+            KEY_USER_NAME + " varchar(100) NOT NULL, " +
+            KEY_USER_PW + " varchar(64) NOT NULL, " +
+            "PRIMARY KEY(" + KEY_USER_ID + ")" +
+            " );";
 
     private static final String CREATE_TABLE_QUESTIONS = "CREATE TABLE " + TABLE_QUESTIONS +
             "(" +
-            KEY_QUESTION_ID + " int NOT NULL," +
-            KEY_QUESTION + " TEXT," +
-            KEY_INDEX_CORRECT_ANSWER + " int NOT NULL" +
+            KEY_QUESTION_ID + " int NOT NULL AUTO_INCREMENT, " +
+            KEY_QUESTION + " TEXT, " +
+            KEY_INDEX_CORRECT_ANSWER + " int NOT NULL, " +
+            "PRIMARY KEY(" + KEY_QUESTION_ID + ")" +
             ");";
 
-    private static final String CREATE_TABLE_ANSWERS = "CREATE TABLE" + TABLE_ANSWERS +
+    private static final String CREATE_TABLE_ANSWERS = "CREATE TABLE " + TABLE_ANSWERS +
             "(" +
             KEY_ANSWER + " TEXT," +
             KEY_QUESTION_FK + " int NOT NULL," +
@@ -62,9 +62,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_USERS);
-        db.execSQL(TABLE_QUESTIONS);
-        db.execSQL(TABLE_ANSWERS);
+        db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREATE_TABLE_QUESTIONS);
+        db.execSQL(CREATE_TABLE_ANSWERS);
     }
 
     @Override
@@ -80,13 +80,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(KEY_USER_ID, user.getId());
         values.put(KEY_USER_NAME, user.getUserName());
         values.put(KEY_USER_PW, user.getPassWord());
-        values.put(KEY_NAME, user.getName());
-        values.put(KEY_SCORE, user.getScore());
 
         db.insert(TABLE_USERS, null, values);
+    }
+
+//    public void addQuestion(Question question) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues questionsValues = new ContentValues();
+//        ContentValues answersValues = new ContentValues();
+//
+//        questionsValues.put(KEY_QUESTION, question.getQuestion());
+//        questionsValues.put(KEY_INDEX_CORRECT_ANSWER, question.getIndexCorrectAnswer());
+//
+//        db.insert(TABLE_QUESTIONS, null, questionsValues);
+//
+//        for(String answer : question.getAnswers()) {
+//            questionsValues.put(KEY_ANSWER, answer);
+//            questionsValues.put(KEY_QUESTION_FK, questionID); // TODO: get the question id from db
+//        }
+//    }
+
+    public void getData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_USERS;
+
+        Log.e(DatabaseHandler.class.getName(), selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) do {
+            System.out.println(c.getString(c.getColumnIndex(KEY_USER_NAME)));
+        } while (c.moveToNext());
+
+        c.close();
     }
 
     public boolean isValidUsername(String username) {
@@ -97,10 +127,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return false;
     }
 
-    // creem user (verificam daca username-ul exista) -> daca exista sugeram sa login sau sa aleaga altul
-    // SAU
-    // ne logam -> verificam username & parola
+    // TODO: add user with dynamic id (auto increase)
 
-    // getName for a userName
-    // getQuestions && getAnswers -> concurently create new question objects
+    // TODO: methods: addQuestion, getAllQuestions as an array of Question
 }
