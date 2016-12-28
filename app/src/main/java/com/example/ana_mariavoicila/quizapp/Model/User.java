@@ -3,13 +3,11 @@ package com.example.ana_mariavoicila.quizapp.Model;
 public class User {
 
     private int id;
-    private String name;
     private String userName;
     private String passWord;
-    private double score;
+    private int score;
 
-    public User(String name, String userName, String passWord) {
-        this.name = name;
+    public User(String userName, String passWord) {
         this.userName = userName;
         this.passWord = passWord;
         this.score = 0;
@@ -21,14 +19,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUserName() {
@@ -47,11 +37,11 @@ public class User {
         this.passWord = passWord;
     }
 
-    public double getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(int score) {
         this.score = score;
     }
 }

@@ -40,10 +40,8 @@ public class Register extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (validate()) {
-                    User newUser = new User("Test", etUsername.getText().toString(), etPassword.getText().toString());
+                    User newUser = new User(etUsername.getText().toString(), etPassword.getText().toString());
                     db.addUser(newUser);
-
-                    // TODO: See if it worked
                 } else {
                     CharSequence text = errorMsg;
                     int duration = Toast.LENGTH_LONG;

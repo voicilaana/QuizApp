@@ -3,15 +3,12 @@ package com.example.ana_mariavoicila.quizapp.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ana-mariavoicila on 20/12/2016.
- */
 
 public class Question {
 
-    String question;
-    int indexCorrectAnswer;
-    List<String> answers;
+    private String question;
+    private int indexCorrectAnswer;
+    private List<String> answers;
 
     public Question(String question, int indexCorrectAnswer, List<String> answers) {
         this.question = question;
