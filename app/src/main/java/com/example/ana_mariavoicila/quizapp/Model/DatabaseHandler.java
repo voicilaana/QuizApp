@@ -61,8 +61,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ");";
 
 
-    public DatabaseHandler(Context context) {
+    private static DatabaseHandler sInstance;
+
+    private DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized DatabaseHandler getInstance(Context context) {
+
+        if (sInstance == null) {
+            sInstance = new DatabaseHandler(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
     @Override
@@ -131,13 +141,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public boolean isValidUsername(String username) {
-
-        return false;
+        //used in register.validate
+        return true;
     }
 
     public boolean validCredentials(String userName, String password) {
-
-        return false;
+        //make login activity + button --> check
+        // true -> dismiss la login, instance la quizquestions
+        // false --> error
+        return true;
     }
 
     public void updateScore(String userName, int score) {

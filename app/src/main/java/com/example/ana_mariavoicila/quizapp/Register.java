@@ -20,6 +20,7 @@ public class Register extends AppCompatActivity {
     Button buttonRegister;
 
     String errorMsg = new String();
+    final DatabaseHandler dataBase = DatabaseHandler.getInstance(getApplicationContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +34,13 @@ public class Register extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.etUserName);
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
 
-        final DatabaseHandler db = new DatabaseHandler(this);
-
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (validate()) {
                     User newUser = new User(etUsername.getText().toString(), etPassword.getText().toString());
-                    db.addUser(newUser);
+                    dataBase.addUser(newUser);
                 } else {
                     CharSequence text = errorMsg;
                     int duration = Toast.LENGTH_LONG;
@@ -51,6 +50,7 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private boolean validate() {
@@ -60,12 +60,14 @@ public class Register extends AppCompatActivity {
         boolean patternKey = true;
 
         if (inputValidatorHelper.isNullOrEmpty(etUsername.getText().toString())){
-            errorMsg = "Username should not be empty.";
+            errorMsg = "Username cannot be empty.";
             return false;
         }
 
+        if (!(dataBase.isValidUsername(etUsername.getText().toString()))) errorMsg = "Username taken.";
+
         if (inputValidatorHelper.isNullOrEmpty (etName.getText().toString())){
-            errorMsg = "First name should not be empty.";
+            errorMsg = "First name cannot be empty.";
             return false;
         }
 
@@ -94,4 +96,5 @@ public class Register extends AppCompatActivity {
 
         return true;
     }
+
 }

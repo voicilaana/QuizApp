@@ -6,9 +6,6 @@ import android.widget.EditText;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by ana-mariavoicila on 26/12/2016.
- */
 
 public class InputValidator {
 

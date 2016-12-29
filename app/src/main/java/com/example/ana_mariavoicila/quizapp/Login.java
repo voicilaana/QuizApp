@@ -7,10 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.ana_mariavoicila.quizapp.Model.DatabaseHandler;
 import com.example.ana_mariavoicila.quizapp.Model.InputValidator;
 
 public class Login extends AppCompatActivity {
+
+    final DatabaseHandler dataBase = DatabaseHandler.getInstance(getApplicationContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,5 +33,26 @@ public class Login extends AppCompatActivity {
                 Login.this.startActivity(registerIntent);
             }
         });
+
+        buttonLogin.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(dataBase.validCredentials(etUsername.getText().toString(), etPassword.getText().toString())) {
+                    Intent loginIntent = new Intent(Login.this, QuizQuestions.class);
+                    Login.this.startActivity(loginIntent);
+
+                } else {
+                    invalidMessage("Username and password do not match.");
+                }
+            }
+        });
+    }
+
+    void invalidMessage(String errorMsg) {
+        CharSequence text = errorMsg;
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+        toast.show();
     }
 }
