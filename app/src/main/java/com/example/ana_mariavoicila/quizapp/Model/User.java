@@ -7,6 +7,12 @@ public class User {
     private String passWord;
     private int score;
 
+    public User() {
+        this.userName = "";
+        this.passWord = "";
+        this.score = 0;
+    }
+
     public User(String userName, String passWord) {
         this.userName = userName;
         this.passWord = passWord;

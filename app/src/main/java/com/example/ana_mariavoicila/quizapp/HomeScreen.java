@@ -13,41 +13,53 @@ import android.widget.Toast;
 
 public class HomeScreen extends AppCompatActivity {
 
-    Button buttonLogin, buttonRegister, buttonStart;
+    private Button buttonLeaderboard, buttonLoginRegister, buttonStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        //POINT 1: create the register SQL database & lister on click for login and register
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        buttonLogin = (Button) findViewById(R.id.buttonLogin);
-        buttonRegister = (Button) findViewById(R.id.buttonRegister);
-        buttonStart = (Button) findViewById(R.id.buttonStart);
+        initParams();
+        initListeners();
+    }
 
-        buttonRegister.setOnClickListener(new View.OnClickListener(){
-            public void onClick (View v) {
-                Intent intentRegister = new Intent(getApplicationContext(), Register.class);
-                startActivity(intentRegister);
+    private void initParams() {
+        // TODO: Should add help button with instructions and about
+        // TODO: Should add logo "The Quiz App" - maybe a colorful Q
+        buttonLoginRegister = (Button) findViewById(R.id.buttonLoginRegister);
+        buttonStart = (Button) findViewById(R.id.buttonStart);
+        buttonLeaderboard = (Button) findViewById(R.id.buttonLeaderboard);
+    }
+
+    private void initListeners() {
+        buttonLoginRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intentLogin = new Intent(getApplicationContext(), Login.class);
+                intentLogin.putExtra("caller", "HomeScreen");
+                startActivity(intentLogin);
             }
         });
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Intent intentStart = new Intent(getApplicationContext(), QuizQuestions.class);
+                intentStart.putExtra("caller", "HomeScreen");
                 startActivity(intentStart);
+                // TODO: Should ask if wants to login or play as anon
+                // Start the appropriate activity
             }
         });
 
+        buttonLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Showing leaderboard...");
+            }
+        });
     }
-
-    public void login (View v)
-    {
-        final Dialog dialog = new Dialog(HomeScreen.this);
-
-    }
-
 }

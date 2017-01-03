@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">QuizApp</string>
+    <string name="app_name">The Quiz</string>
 
     <!-- Home Activity -->
     <string name="action_settings">Settings</string>
-    <string name="RegisterButton">Register</string>
-    <string name="StartButton">Start Quiz</string>
-    <string name="LeaderBoardButton">See Leaderboard</string>
+    <string name="RegisterButton">Login/Register</string>
+    <string name="StartButton">Start</string>
+    <string name="LeaderBoardButton">Leaderboard</string>
 
     <!-- Questions Activity -->
     <string name="question">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
@@ -17,4 +17,22 @@
     <string name="username">username</string>
     <string name="score">0</string>
     <string name="skip">Skip</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="username_form">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register Here</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!-- Spinner related strings -->
+    <string name="spinner_prompt">Select a question</string>
 </resources>

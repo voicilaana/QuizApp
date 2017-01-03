@@ -99,6 +99,15 @@
         android:id="@+id/tvUsername"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonSkip"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/spinnerQuestions"
+        android:prompt="@string/spinner_prompt" />
 
 </RelativeLayout>

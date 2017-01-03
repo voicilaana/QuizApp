@@ -9,11 +9,20 @@ public class Question {
     private String question;
     private int indexCorrectAnswer;
     private List<String> answers;
+    private boolean answered;
+
+    public Question() {
+        question = "";
+        indexCorrectAnswer = -1;
+        answers = new ArrayList<>();
+        answered = false;
+    }
 
     public Question(String question, int indexCorrectAnswer, List<String> answers) {
         this.question = question;
         this.indexCorrectAnswer = indexCorrectAnswer;
         this.answers = answers;
+        this.answered = false;
     }
 
     public String getQuestion() {
@@ -38,5 +47,11 @@ public class Question {
 
     public void setAnswers(List<String> answers) {
         this.answers = answers;
+    }
+
+    public boolean isAnswered() { return answered; }
+
+    public void setAnswered(boolean value) {
+        answered = value;
     }
 }

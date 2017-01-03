@@ -10,13 +10,15 @@ import android.util.Log;
 
 import com.example.ana_mariavoicila.quizapp.QuizQuestions;
 
+import java.lang.reflect.Array;
 import java.security.PrivateKey;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "Quiz_Database";
 
     private static final String TABLE_USERS = "Users";
@@ -62,9 +64,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     private static DatabaseHandler sInstance;
+    private List<User> loggedInUsers;
 
     private DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        loggedInUsers = new ArrayList<User>();
     }
 
     public static synchronized DatabaseHandler getInstance(Context context) {
@@ -141,28 +146,114 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public boolean isValidUsername(String username) {
-        //used in register.validate
+        String dbUsername = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_USERS + " WHERE " + KEY_USER_NAME + "='" + username + "'";
+        Log.e(DatabaseHandler.class.getName(), selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) do {
+            dbUsername = (c.getString(c.getColumnIndex(KEY_USER_NAME)));
+        } while (c.moveToNext());
+
+        c.close();
+
+        if (dbUsername != null && dbUsername.equals(username)) {
+            return false;
+        }
+
         return true;
     }
 
     public boolean validCredentials(String userName, String password) {
-        //make login activity + button --> check
-        // true -> dismiss la login, instance la quizquestions
-        // false --> error
-        return true;
-    }
+        User user = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_USERS + " WHERE " + KEY_USER_NAME + "='" + userName + "' AND " + KEY_USER_PW + "='" + password + "'";
+        Log.e(DatabaseHandler.class.getName(), selectQuery);
 
-    public void updateScore(String userName, int score) {
+        Cursor c = db.rawQuery(selectQuery, null);
 
+        if (c.moveToFirst()) do {
+            user = new User();
+            user.setUserName(c.getString(c.getColumnIndex(KEY_USER_NAME)));
+            user.setPassWord(c.getString(c.getColumnIndex(KEY_USER_PW)));
+            user.setId(c.getInt(c.getColumnIndex(KEY_USER_ID)));
+            user.setScore(c.getInt(c.getColumnIndex(KEY_USER_SCORE)));
+        } while (c.moveToNext());
+
+        c.close();
+
+        if (user != null) {
+            loggedInUsers.add(user);
+            return true;
+        }
+
+        return false;
     }
 
     public User getUser() {
+        if (!loggedInUsers.isEmpty()) {
+            return loggedInUsers.get(loggedInUsers.size() - 1);
+        }
 
         return null;
     }
 
-    public List<Question> getAllQuestions() {
+    public int updateScore(User user) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_NAME, user.getUserName());
+        values.put(KEY_USER_PW, user.getPassWord());
+        values.put(KEY_USER_SCORE, user.getScore());
 
-        return null;
+        return this.getWritableDatabase().update(TABLE_USERS, values, KEY_USER_ID + "=?", new String[] { String.valueOf(user.getId()) });
+    }
+
+    public List<Question> getAllQuestions() {
+        List<Question> questions = new ArrayList<Question>();
+        String selectQuestionsQuery = "SELECT * FROM " + TABLE_QUESTIONS;
+        String selectAnswersQuery = "SELECT * FROM " + TABLE_ANSWERS;
+        String whereStatement;
+
+        Log.e(DatabaseHandler.class.getName(), selectQuestionsQuery);
+        Cursor qstC = this.getReadableDatabase().rawQuery(selectQuestionsQuery, null);
+        Cursor ansC = null;
+
+        if (qstC.moveToFirst()) {
+            do {
+                Question question = new Question();
+                question.setQuestion(qstC.getString((qstC.getColumnIndex(KEY_QUESTION))));
+                question.setIndexCorrectAnswer(qstC.getInt(qstC.getColumnIndex(KEY_INDEX_CORRECT_ANSWER)));
+
+                Log.e(DatabaseHandler.class.getName(), selectQuestionsQuery);
+                whereStatement = " WHERE " + KEY_QUESTION_FK + "='" + qstC.getInt(qstC.getColumnIndex(KEY_QUESTION_ID)) + "'";
+                ansC = this.getReadableDatabase().rawQuery(selectAnswersQuery + whereStatement, null);
+                List<String> answers = new ArrayList<String>();
+
+                if (ansC.moveToFirst()) {
+                    do {
+                        answers.add(ansC.getString(ansC.getColumnIndex(KEY_ANSWER)));
+                    } while (ansC.moveToNext());
+                }
+
+                question.setAnswers(answers);
+                questions.add(question);
+            } while (qstC.moveToNext());
+        }
+
+        if (questions.isEmpty()) {
+            questions = getQuestionsFromFile();
+        }
+
+        return questions;
+    }
+
+    private ArrayList<Question> getQuestionsFromFile() {
+        ArrayList<Question> questions = new ArrayList<Question>();
+
+        // TODO: add call to parser created by Bogdan
+        // Should be a method from another object "QuestionsParser" defined in the Model as well - getQuestions()
+
+        return questions;
     }
 }

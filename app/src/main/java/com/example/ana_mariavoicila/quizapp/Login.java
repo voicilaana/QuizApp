@@ -14,33 +14,51 @@ import com.example.ana_mariavoicila.quizapp.Model.InputValidator;
 
 public class Login extends AppCompatActivity {
 
-    final DatabaseHandler dataBase = DatabaseHandler.getInstance(getApplicationContext());
+    private EditText etUsername;
+    private EditText etPassword;
+    private Button buttonLogin;
+    private Button buttonRegister;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
-        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
-        final Button buttonLogin = (Button) findViewById(R.id.buttonLogin);
-        final TextView registerLink = (TextView) findViewById(R.id.tvRegister);
+        initParams();
+        initListeners();
+    }
 
-        registerLink.setOnClickListener(new View.OnClickListener(){
+    private void initParams() {
+        etUsername = (EditText) findViewById(R.id.etUsername);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        buttonRegister = (Button) findViewById(R.id.buttonRegister);
+
+        toast = Toast.makeText(this, "message", Toast.LENGTH_LONG);
+    }
+
+    private void initListeners() {
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Intent registerIntent = new Intent(Login.this, Register.class);
-                Login.this.startActivity(registerIntent);
+                Intent registerIntent = new Intent(getApplicationContext(), Register.class);
+                registerIntent.putExtra("caller", "Login");
+                startActivity(registerIntent);
             }
         });
 
         buttonLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(dataBase.validCredentials(etUsername.getText().toString(), etPassword.getText().toString())) {
-                    Intent loginIntent = new Intent(Login.this, QuizQuestions.class);
-                    Login.this.startActivity(loginIntent);
-
+                if(DatabaseHandler.getInstance(getApplicationContext()).validCredentials(etUsername.getText().toString(), etPassword.getText().toString())) {
+                    Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
+                    quizQuestionsIntent.putExtra("caller", "Login");
+                    startActivity(quizQuestionsIntent);
+                    // TODO: Should change quizQuestionsIntent to modeSelectionIntent (single/multi player)
+                    // TODO: Multi-player should login/register/play-anon
+                    // TODO: Should use fragments somehow (it's a requirement)
                 } else {
                     invalidMessage("Username and password do not match.");
                 }
@@ -48,11 +66,8 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    void invalidMessage(String errorMsg) {
-        CharSequence text = errorMsg;
-        int duration = Toast.LENGTH_LONG;
-
-        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+    private void invalidMessage(String errorMsg) {
+        toast.setText(errorMsg);
         toast.show();
     }
 }
