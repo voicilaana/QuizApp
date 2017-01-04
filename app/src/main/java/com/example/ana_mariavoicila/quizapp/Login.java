@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent registerIntent = new Intent(getApplicationContext(), Register.class);
                 registerIntent.putExtra("caller", "Login");
-                startActivity(registerIntent);
+                startActivityForResult(registerIntent, 2);
             }
         });
 
@@ -55,15 +55,24 @@ public class Login extends AppCompatActivity {
                 if(DatabaseHandler.getInstance(getApplicationContext()).validCredentials(etUsername.getText().toString(), etPassword.getText().toString())) {
                     Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
                     quizQuestionsIntent.putExtra("caller", "Login");
-                    startActivity(quizQuestionsIntent);
+                    startActivityForResult(quizQuestionsIntent, 1);
                     // TODO: Should change quizQuestionsIntent to modeSelectionIntent (single/multi player)
                     // TODO: Multi-player should login/register/play-anon
-                    // TODO: Should use fragments somehow (it's a requirement)
                 } else {
                     invalidMessage("Username and password do not match.");
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            etUsername.setText(data.getStringExtra("USERNAME"));
+            etPassword.setText(data.getStringExtra("PASSWORD"));
+            buttonRegister.setEnabled(false);
+        }
     }
 
     private void invalidMessage(String errorMsg) {

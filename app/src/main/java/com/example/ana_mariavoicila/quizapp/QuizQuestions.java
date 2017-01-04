@@ -42,6 +42,10 @@ public class QuizQuestions extends AppCompatActivity {
         initListeners();
     }
 
+    private void finishQuiz() {
+        // TODO: implement finished activity | add score/s, button to leaderboard
+    }
+
     private void initParams() {
         toast = Toast.makeText(this, "message", Toast.LENGTH_LONG);
         currentQuestionIndex = 0;
@@ -69,7 +73,7 @@ public class QuizQuestions extends AppCompatActivity {
             if (caller.equals("HomeScreen")) {
                 generateRandomUser();
             } else {
-                showMessage("Caller undefined.");
+                System.err.println("Caller undefined for QuizQuestions");
             }
         }
 
@@ -79,17 +83,6 @@ public class QuizQuestions extends AppCompatActivity {
         tvUsername.setText(user.getUserName());
         tvScore.setText(String.valueOf(user.getScore()));
         changeQuestion(currentQuestionIndex);
-    }
-
-    private void generateRandomUser() {
-        user = new User("anon-" + (int)(10000 * Math.random() + 100), "default-password");
-
-        while (!DatabaseHandler.getInstance(getApplicationContext()).isValidUsername(user.getUserName())) {
-            user.setUserName("anon-" + (int)(10000 * Math.random() + 100));
-        }
-
-        DatabaseHandler.getInstance(getApplicationContext()).addUser(user);
-        DatabaseHandler.getInstance(getApplicationContext()).validCredentials(user.getUserName(), user.getPassWord());
     }
 
     private void initListeners() {
@@ -108,8 +101,7 @@ public class QuizQuestions extends AppCompatActivity {
                             changeQuestion(currentQuestionIndex);
                         } else {
                             showMessage("No more questions to follow!");
-                            showMessage("Should finish the game and show score..");
-                            // TODO: Should display the score in a new activity along with a button to leaderboard.
+                            finishQuiz();
                         }
                     }
                 } else {
@@ -127,13 +119,10 @@ public class QuizQuestions extends AppCompatActivity {
                     for (int i = 0; i < listButtonAnswers.size(); i++) {
                         if (i == listQuestions.get(currentQuestionIndex).getIndexCorrectAnswer()) {
                             listButtonAnswers.get(i).setBackgroundColor(Color.GREEN);
-                        } else {
-                            listButtonAnswers.get(i).setBackgroundColor(Color.RED);
-                            listButtonAnswers.get(i).setEnabled(false);
                         }
-                    }
 
-                    showMessage("Press the correct answer to go to the next question.");
+                        listButtonAnswers.get(i).setEnabled(false);
+                    }
                 } else {
                     showMessage("No questions to be cheated!");
                 }
@@ -146,13 +135,12 @@ public class QuizQuestions extends AppCompatActivity {
                 currentQuestionIndex = getNextQuestionNotAnswered();
                 if (currentQuestionIndex != -1) {
                     spinnerQuestions.setSelection(currentQuestionIndex);
-//                    changeQuestion(currentQuestionIndex);
                 } else {
                     buttonNext.setText("Finish");
                     buttonNext.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            showMessage("Game finished! Showing score.."); // TODO: add indent to finished game activity
+                            finishQuiz();
                         }
                     });
                 }
@@ -173,9 +161,20 @@ public class QuizQuestions extends AppCompatActivity {
         });
     }
 
+    private void generateRandomUser() {
+        user = new User("anon-" + (int)(10000 * Math.random() + 100), "default-password");
+
+        while (!DatabaseHandler.getInstance(getApplicationContext()).isValidUsername(user.getUserName())) {
+            user.setUserName("anon-" + (int)(10000 * Math.random() + 100));
+        }
+
+        DatabaseHandler.getInstance(getApplicationContext()).addUser(user);
+        DatabaseHandler.getInstance(getApplicationContext()).validCredentials(user.getUserName(), user.getPassWord());
+    }
+
     protected void changeQuestion(int index) {
         if (!listQuestions.isEmpty()) {
-            if (index < listQuestions.size() && index >= 0 && questionsNotAnswered()) {
+            if (index < listQuestions.size() && index >= 0) {
                 final Question question = listQuestions.get(index);
                 tvQuestion.setText(question.getQuestion());
                 List<String> answers = question.getAnswers();
@@ -189,8 +188,6 @@ public class QuizQuestions extends AppCompatActivity {
                         listButtonAnswers.get(i).setOnClickListener(new AnswerButtonListener(false, question.isAnswered(), question.getIndexCorrectAnswer(), index));
                     }
                 }
-            } else {
-                showMessage("No more questions to follow!");
             }
         } else {
             showMessage("The app does not have questions loaded.");

@@ -43,9 +43,14 @@ public class Register extends AppCompatActivity {
                     User newUser = new User(etUsername.getText().toString(), etPassword.getText().toString());
                     dataBase.addUser(newUser);
 
-                    Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
-                    quizQuestionsIntent.putExtra("caller", "Register");
-                    startActivity(quizQuestionsIntent);
+//                    Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
+//                    quizQuestionsIntent.putExtra("caller", "Register");
+//                    startActivity(quizQuestionsIntent);
+                    Intent intent = new Intent();
+                    intent.putExtra("USERNAME", newUser.getUserName());
+                    intent.putExtra("PASSWORD", newUser.getPassWord());
+                    setResult(2, intent);
+                    finish();
                 }
 
                 showMessage(message);

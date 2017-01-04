@@ -25,8 +25,6 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void initParams() {
-        // TODO: Should add help button with instructions and about
-        // TODO: Should add logo "The Quiz App" - maybe a colorful Q
         buttonLoginRegister = (Button) findViewById(R.id.buttonLoginRegister);
         buttonStart = (Button) findViewById(R.id.buttonStart);
         buttonLeaderboard = (Button) findViewById(R.id.buttonLeaderboard);
@@ -50,8 +48,6 @@ public class HomeScreen extends AppCompatActivity {
                 Intent intentStart = new Intent(getApplicationContext(), QuizQuestions.class);
                 intentStart.putExtra("caller", "HomeScreen");
                 startActivity(intentStart);
-                // TODO: Should ask if wants to login or play as anon
-                // Start the appropriate activity
             }
         });
 

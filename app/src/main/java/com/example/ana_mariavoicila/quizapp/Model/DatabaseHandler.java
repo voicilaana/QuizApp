@@ -256,8 +256,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         questions = parser.getQuestions();
 
-        // TODO: select (NO_OF_QUESTION_PER_GAME * NUMBER_OF_PLAYERS) random questions
-
         return questions;
     }
 }
