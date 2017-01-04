@@ -3,6 +3,7 @@ package com.example.ana_mariavoicila.quizapp.Model;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -65,10 +66,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static DatabaseHandler sInstance;
     private List<User> loggedInUsers;
+    private Context context;
 
     private DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+        this.context = context;
         loggedInUsers = new ArrayList<User>();
     }
 
@@ -250,9 +252,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private ArrayList<Question> getQuestionsFromFile() {
         ArrayList<Question> questions = new ArrayList<Question>();
+        FileParser parser = new FileParser(context.getAssets());
 
-        // TODO: add call to parser created by Bogdan
-        // Should be a method from another object "QuestionsParser" defined in the Model as well - getQuestions()
+        questions = parser.getQuestions();
+
+        // TODO: select (NO_OF_QUESTION_PER_GAME * NUMBER_OF_PLAYERS) random questions
 
         return questions;
     }

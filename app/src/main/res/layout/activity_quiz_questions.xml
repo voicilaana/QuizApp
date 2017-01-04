@@ -40,15 +40,6 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:text="@string/cheat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/buttonCheat" />
-
-    <Button
         android:text="@string/answer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,5 +100,22 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/spinnerQuestions"
         android:prompt="@string/spinner_prompt" />
+
+    <Button
+        android:text="@string/cheat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCheat"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="@string/buttonNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonNext"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

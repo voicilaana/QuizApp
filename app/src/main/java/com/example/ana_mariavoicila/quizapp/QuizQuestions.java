@@ -23,7 +23,7 @@ import java.util.List;
 public class QuizQuestions extends AppCompatActivity {
 
     private TextView tvQuestion, tvScore, tvUsername;
-    private Button buttonSkip, buttonCheat;
+    private Button buttonSkip, buttonCheat, buttonNext;
     private List<Button> listButtonAnswers;
     private Spinner spinnerQuestions;
 
@@ -52,6 +52,7 @@ public class QuizQuestions extends AppCompatActivity {
         tvUsername = (TextView) findViewById(R.id.tvUsername);
         buttonSkip = (Button) findViewById(R.id.buttonSkip);
         buttonCheat = (Button) findViewById(R.id.buttonCheat);
+        buttonNext = (Button) findViewById(R.id.buttonNext);
         spinnerQuestions = (Spinner) findViewById(R.id.spinnerQuestions);
 
         listButtonAnswers.add((Button) findViewById(R.id.buttonAnswer1));
@@ -139,6 +140,25 @@ public class QuizQuestions extends AppCompatActivity {
             }
         });
 
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentQuestionIndex = getNextQuestionNotAnswered();
+                if (currentQuestionIndex != -1) {
+                    spinnerQuestions.setSelection(currentQuestionIndex);
+//                    changeQuestion(currentQuestionIndex);
+                } else {
+                    buttonNext.setText("Finish");
+                    buttonNext.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showMessage("Game finished! Showing score.."); // TODO: add indent to finished game activity
+                        }
+                    });
+                }
+            }
+        });
+
         spinnerQuestions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -155,44 +175,22 @@ public class QuizQuestions extends AppCompatActivity {
 
     protected void changeQuestion(int index) {
         if (!listQuestions.isEmpty()) {
-            final Question question = listQuestions.get(index);
-            tvQuestion.setText(question.getQuestion());
-            List<String> answers = question.getAnswers();
+            if (index < listQuestions.size() && index >= 0 && questionsNotAnswered()) {
+                final Question question = listQuestions.get(index);
+                tvQuestion.setText(question.getQuestion());
+                List<String> answers = question.getAnswers();
 
-            for (int i = 0; i < answers.size(); i++) {
-                listButtonAnswers.get(i).setText(answers.get(i));
-
-                if (!question.isAnswered()) {
-                    if (i == question.getIndexCorrectAnswer()) {
-                        listButtonAnswers.get(i).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                question.setAnswered(true);
-                                user.setScore(user.getScore() + 1);
-                                listButtonAnswers.get(currentQuestionIndex).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        currentQuestionIndex += 1;
-                                        changeQuestion(currentQuestionIndex);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                } else {
-                    listButtonAnswers.get(i).setEnabled(false);
-                    listButtonAnswers.get(i).setBackgroundColor(Color.RED);
+                for (int i = 0; i < answers.size(); i++) {
+                    listButtonAnswers.get(i).setText(answers.get(i));
 
                     if (i == question.getIndexCorrectAnswer()) {
-                        listButtonAnswers.get(i).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                question.setAnswered(true);
-                            }
-                        });
-                        listButtonAnswers.get(i).setBackgroundColor(Color.GREEN);
+                        listButtonAnswers.get(i).setOnClickListener(new AnswerButtonListener(true, question.isAnswered(), i, index));
+                    } else {
+                        listButtonAnswers.get(i).setOnClickListener(new AnswerButtonListener(false, question.isAnswered(), question.getIndexCorrectAnswer(), index));
                     }
                 }
+            } else {
+                showMessage("No more questions to follow!");
             }
         } else {
             showMessage("The app does not have questions loaded.");
@@ -222,7 +220,7 @@ public class QuizQuestions extends AppCompatActivity {
     }
 
     private int getNextQuestionNotAnswered() {
-        int i = currentQuestionIndex;
+        int i = currentQuestionIndex + 1;
 
         if (i >= listQuestions.size()) {
             i = 0;
@@ -240,5 +238,69 @@ public class QuizQuestions extends AppCompatActivity {
     private void showMessage(String message) {
         toast.setText(message);
         toast.show();
+    }
+
+    private class AnswerButtonListener implements View.OnClickListener {
+
+        private boolean isCorrect;
+        private boolean isAnswered;
+        private int correctId;
+        private int questionId;
+
+        public AnswerButtonListener(boolean isCorrect, boolean isAnswered, int correctId, int questionId) {
+            this.isCorrect = isCorrect;
+            this.isAnswered = isAnswered;
+            this.correctId = correctId;
+            this.questionId = questionId;
+
+            init();
+        }
+
+        private void init() {
+            if (isAnswered && listButtonAnswers.get(0).isEnabled()) {
+                disableButtons();
+            } else if (!isAnswered && !listButtonAnswers.get(0).isEnabled()) {
+                cleanButtons();
+            }
+        }
+
+        private void cleanButtons() {
+            for (Button button : listButtonAnswers) {
+                button.setEnabled(true);
+                button.setBackgroundResource(android.R.drawable.btn_default);
+            }
+        }
+
+        private void disableButtons() {
+            for (Button button : listButtonAnswers) {
+                button.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (view instanceof Button) {
+                Button buttonAnswer = (Button) view;
+
+                if (isCorrect) {
+                    buttonAnswer.setBackgroundColor(Color.GREEN);
+                    user.setScore(user.getScore() + 1);
+                    tvScore.setText(String.valueOf(user.getScore()));
+
+                    disableButtons();
+
+                    showMessage("Correct answer!");
+                } else {
+                    buttonAnswer.setBackgroundColor(Color.RED);
+                    listButtonAnswers.get(correctId).setBackgroundColor(Color.GREEN);
+
+                    disableButtons();
+
+                    showMessage("Wrong answer!");
+                }
+            }
+
+            listQuestions.get(questionId).setAnswered(true);
+        }
     }
 }

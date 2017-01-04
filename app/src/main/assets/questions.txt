@@ -1,0 +1,60 @@
+What colour is the French wine Beaujolais?|1
+Red @n White @n Rosé @n Purple
+What should you do in the Arab countries to show that the food was delicious?|2
+Bow @n Belch @n Kneel @n Throw up
+Which nuts are used in marzipan?|3
+Walnuts @n Cashews @n Almonds @n Pecans
+From which cactus is tequila made?|4
+Saguaro @n Peyote @n Ferocactus @n Agave
+From which country does pitta bread originate?|1
+Greece @n Cyprus @n Macedonia @n Italy
+Which country is the origin of the cocktail Mojito?|2
+Venezuela @n Cuba @n Mexico @n USA
+What is the well-known drink from Greece?|3
+Whiskey @n Cava @n Ouzo @n Vermouth
+Which cheese is traditionally used for pizzas?|4
+Cottage Cheese @n Cheddar @n Emmental @n Mozzarella
+Which country is the origin of the Stella Artois beer?|1
+Belgium @n The Netherlands @n France @n Denmark
+From which country is the famous Emmental Cheese?|2
+France @n Switzerland @n The Netherlands @n UK
+What is the most famous Mexican beer?|3
+Moritz @n Heineken @n Cobra @n Corona
+What is the name of the gas that let rise bread dough?|4
+Argon @n Helium @n Butane @n Carbon dioxide
+What is Japanese sake made from?|1
+Rice @n Seaweed @n Beans @n Grapes
+What is bottled a lot in the French town Vichy?|2
+Apple Juice @n Water @n Wine @n Grape Juice
+Which French town is known for its mustard?|3
+Lyon @n Paris @n Dijon @n Bordeaux
+What is the chemical formula for Table Salt?|4
+H2O @n CO2 @n C12H22O11 @n NaCl
+What beer is marketed as The king of beers?|1
+Budweiser @n Heineken @n Foster @n Guinness
+With which fruit is Kriek beer (a Belgium brew) flavoured?|2
+Strawberries @n Cherries @n Oranges @n Apples
+What is the real meaning of the Greek word Pita?|3
+Olives @n Cheese @n Bread @n Butter
+What is the most famous beer in Ireland?|4
+Hobgoblin @n Epa @n Murphy’s @n Guinness
+‘Pho’ is a noodle soup that originates from which country?|1
+Vietnam @n Japan @n China @n Malaysia
+Which cocktail was the favourite drink of ‘The Dude’ in the 1998 film ‘The Big Lebowski’?|2
+Pina Colada @n White Russian @n Gin and Tonic @n Bloody Mary
+How old does a sheep have to be before its meat is classed as mutton?|3
+5 years @n 3 years @n 2 years @n 4 years
+Allium sativum is the Latin name for which pungent foodstuff?|4
+Onion @n Ginger @n Cloves @n Garlic
+A Bombay duck is not a duck at all – what is it?|1
+A fish @n A chicken @n A lizard @n A crab
+Who is the richest celebrity chef in the world, worth over £240 million?|2
+Gordon Ramsay @n Jamie Oliver @n Mary Berry @n Paul Hollywood
+What dessert is also sometimes called ‘Tuscan Trifle’?|3
+Cannoli @n Panettone @n Tiramisu @n Panna cotta
+Pavlova is a famous dessert named after a Russian ballerina – what was her first name?|4
+Svetlana @n Diana @n Galina @n Anna
+Which Cadbury’s chocolate bar is shaped like a frog?|1
+Freddo @n Twirl @n Flake @n Wispa
+In which country is the wine-producing region of Langhorne Creek?|2
+South Africa @n Australia @n Spain @n US
