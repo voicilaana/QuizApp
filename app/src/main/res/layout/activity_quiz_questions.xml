@@ -17,7 +17,8 @@
         android:id="@+id/tvScore"
         android:text="@string/score"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="18sp" />
 
     <TextView
         android:text="@string/question"
@@ -28,7 +29,9 @@
         android:layout_marginTop="31dp"
         android:id="@+id/tvQuestion"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textSize="18sp"
+        android:textAlignment="center" />
 
     <Button
         android:text="@string/skip"
@@ -48,7 +51,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textSize="18sp" />
 
     <Button
         android:text="@string/answer3"
@@ -59,7 +63,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textSize="18sp" />
 
     <Button
         android:text="@string/answer4"
@@ -70,7 +75,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="18sp" />
 
     <Button
         android:text="@string/answer1"
@@ -81,7 +87,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textSize="18sp" />
 
     <TextView
         android:text="@string/username"
@@ -91,7 +98,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        tools:ignore="RelativeOverlap" />
+        tools:ignore="RelativeOverlap"
+        android:textSize="18sp" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -99,7 +107,8 @@
         android:layout_above="@+id/buttonSkip"
         android:layout_centerHorizontal="true"
         android:id="@+id/spinnerQuestions"
-        android:prompt="@string/spinner_prompt" />
+        android:prompt="@string/spinner_prompt"
+        android:spinnerMode="dialog" />
 
     <Button
         android:text="@string/cheat"

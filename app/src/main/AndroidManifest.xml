@@ -23,6 +23,7 @@
         <activity android:name=".Login" />
         <activity android:name=".Register" />
         <activity android:name=".QuizQuestions" />
+        <activity android:name=".Finish"></activity>
     </application>
 
 </manifest>

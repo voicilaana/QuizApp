@@ -36,4 +36,9 @@
 
     <!-- Spinner related strings -->
     <string name="spinner_prompt">Select a question</string>
+    <string name="title_activity_finish">Finish</string>
+
+    <!-- Finish activity -->
+    <string name="scoreTitle">Score:</string>
+    <string name="congrats_message">Congratulations!</string>
 </resources>

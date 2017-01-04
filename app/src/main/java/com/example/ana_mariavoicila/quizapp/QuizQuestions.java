@@ -1,6 +1,8 @@
 package com.example.ana_mariavoicila.quizapp;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +45,11 @@ public class QuizQuestions extends AppCompatActivity {
     }
 
     private void finishQuiz() {
-        // TODO: implement finished activity | add score/s, button to leaderboard
+        DatabaseHandler.getInstance(getApplicationContext()).updateScore(user);
+
+        Intent intentFinish = new Intent(getApplicationContext(), Finish.class);
+        intentFinish.putExtra("caller", "QuizQuestions");
+        startActivity(intentFinish);
     }
 
     private void initParams() {
@@ -90,19 +96,13 @@ public class QuizQuestions extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!listQuestions.isEmpty()) {
-                    listQuestions.get(currentQuestionIndex).setAnswered(true);
-
-                    currentQuestionIndex += 1;
-                    if (currentQuestionIndex < listQuestions.size()) {
-                        changeQuestion(currentQuestionIndex);
-                    } else {
-                        if (questionsNotAnswered()) {
+                    if (currentQuestionIndex < listQuestions.size() && currentQuestionIndex >= 0 && questionsNotAnswered()) {
+                            listQuestions.get(currentQuestionIndex).setAnswered(true);
                             currentQuestionIndex = getNextQuestionNotAnswered();
                             changeQuestion(currentQuestionIndex);
-                        } else {
-                            showMessage("No more questions to follow!");
-                            finishQuiz();
-                        }
+                    } else {
+                        showMessage("No more questions to follow!");
+                        finishQuiz();
                     }
                 } else {
                     showMessage("No questions to be skipped!");
@@ -285,15 +285,11 @@ public class QuizQuestions extends AppCompatActivity {
                     tvScore.setText(String.valueOf(user.getScore()));
 
                     disableButtons();
-
-                    showMessage("Correct answer!");
                 } else {
                     buttonAnswer.setBackgroundColor(Color.RED);
                     listButtonAnswers.get(correctId).setBackgroundColor(Color.GREEN);
 
                     disableButtons();
-
-                    showMessage("Wrong answer!");
                 }
             }
 
