@@ -7,6 +7,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.Editable;
 import android.util.Log;
 
 import com.example.ana_mariavoicila.quizapp.QuizQuestions;
@@ -257,5 +258,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         questions = parser.getQuestions();
 
         return questions;
+    }
+
+    public void logoutUser(String username) {
+        for (User user : loggedInUsers) {
+            if (user.getUserName().equals(username)) {
+                loggedInUsers.remove(user);
+                break;
+            }
+        }
     }
 }

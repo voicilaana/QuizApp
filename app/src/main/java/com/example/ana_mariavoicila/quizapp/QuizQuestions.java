@@ -72,15 +72,11 @@ public class QuizQuestions extends AppCompatActivity {
 
         user = DatabaseHandler.getInstance(getApplicationContext()).getUser();
 
-        String caller = "";
-        if (user == null) {
-            caller = getIntent().getStringExtra("caller");
-
-            if (caller.equals("HomeScreen")) {
-                generateRandomUser();
-            } else {
-                System.err.println("Caller undefined for QuizQuestions");
-            }
+        String caller = getIntent().getStringExtra("caller");
+        if (user == null || caller.equals("HomeScreen")) {
+            generateRandomUser();
+        } else {
+            System.err.println("Caller or user undefined for QuizQuestions.");
         }
 
         listQuestions = DatabaseHandler.getInstance(getApplicationContext()).getAllQuestions();

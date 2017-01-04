@@ -68,10 +68,15 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 2) {
             etUsername.setText(data.getStringExtra("USERNAME"));
             etPassword.setText(data.getStringExtra("PASSWORD"));
             buttonRegister.setEnabled(false);
+        } else if (requestCode == 1) {
+            DatabaseHandler.getInstance(getApplicationContext()).logoutUser(etUsername.getText().toString());
+            etUsername.setText("");
+            etPassword.setText("");
         }
     }
 
