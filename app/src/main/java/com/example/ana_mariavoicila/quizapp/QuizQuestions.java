@@ -3,7 +3,6 @@ package com.example.ana_mariavoicila.quizapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,8 +16,6 @@ import android.widget.Toast;
 import com.example.ana_mariavoicila.quizapp.Model.DatabaseHandler;
 import com.example.ana_mariavoicila.quizapp.Model.Question;
 import com.example.ana_mariavoicila.quizapp.Model.User;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -336,5 +333,11 @@ public class QuizQuestions extends AppCompatActivity {
 
             listQuestions.get(questionId).setAnswered(true);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DatabaseHandler.getInstance(getApplicationContext()).logoutUsers();
     }
 }

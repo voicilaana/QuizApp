@@ -125,6 +125,8 @@
         android:id="@+id/buttonNext"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignRight="@+id/buttonCheat"
+        android:layout_alignEnd="@+id/buttonCheat"/>
 
 </RelativeLayout>

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ana_mariavoicila.quizapp.Model.DatabaseHandler;
-import com.example.ana_mariavoicila.quizapp.Model.InputValidator;
 import com.example.ana_mariavoicila.quizapp.Model.User;
 
 public class Login extends AppCompatActivity {
@@ -89,11 +88,10 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("DefaultLocale")
     private void resetViewForNewUser() {
         etUsername.setText("");
         etPassword.setText("");
-        tvPlayerNumber.setText(String.format("%s %d", R.string.playerString, DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1));
+        tvPlayerNumber.setText("Player " + DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1);
     }
 
     private void initMultiPlayerListeners() {
@@ -162,5 +160,11 @@ public class Login extends AppCompatActivity {
     private void invalidMessage(String errorMsg) {
         toast.setText(errorMsg);
         toast.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DatabaseHandler.getInstance(getApplicationContext()).logoutUsers();
     }
 }
