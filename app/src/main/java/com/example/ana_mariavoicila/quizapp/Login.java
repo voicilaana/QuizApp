@@ -88,10 +88,12 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void resetViewForNewUser() {
         etUsername.setText("");
         etPassword.setText("");
-        tvPlayerNumber.setText("Player " + DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1);
+        int playerNumber = DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1;
+        tvPlayerNumber.setText("Player " + playerNumber);
     }
 
     private void initMultiPlayerListeners() {
