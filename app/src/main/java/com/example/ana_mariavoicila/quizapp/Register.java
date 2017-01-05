@@ -75,17 +75,20 @@ public class Register extends AppCompatActivity {
             return false;
         }
 
-        if (!(dataBase.isValidUsername(etUsername.getText().toString()))) {
+        if (!dataBase.isValidUsername(etUsername.getText().toString())) {
             message = "Username taken.";
             return false;
         }
 
-        if (inputValidatorHelper.isValidPassword (etPassword.getText().toString(), patternKey)) {
+
+
+        if (inputValidatorHelper.isValidPassword(etPassword.getText().toString(), patternKey)) {
             if (patternKey) {
                 message = "Password should contain a special character.";
             } else {
-                message = "Password should contain only letters and numbers.";
+                message = "Password should contain only letters.";
             }
+
             return false;
         }
 
@@ -93,8 +96,9 @@ public class Register extends AppCompatActivity {
             if (patternKey) {
                 message = "Password should contain a special character.";
             } else {
-                message = "Password should contain only letters and numbers.";
+                message = "Password should contain only letters.";
             }
+
             return false;
         }
 

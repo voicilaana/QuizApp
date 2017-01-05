@@ -9,16 +9,16 @@ import java.util.regex.Pattern;
 
 public class InputValidator {
 
-    public boolean isValidPassword(String string, boolean allowSpecialChars) {
+    public boolean isValidPassword(String password, boolean allowSpecialChars) {
         String PATTERN;
+
         if (allowSpecialChars) {
             PATTERN = "^[a-zA-Z@#$]\\w{5,19}$";
         } else {
             PATTERN = "^[a-zA-Z]\\w{5,19}$";
         }
-        Pattern pattern = Pattern.compile(PATTERN);
-        Matcher matcher = pattern.matcher(string);
-        return matcher.matches();
+
+        return password.matches(PATTERN);
     }
 
     public boolean isNullOrEmpty(String string) {
