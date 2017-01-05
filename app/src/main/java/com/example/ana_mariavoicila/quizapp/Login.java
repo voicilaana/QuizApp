@@ -56,8 +56,6 @@ public class Login extends AppCompatActivity {
                     Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
                     quizQuestionsIntent.putExtra("caller", "Login");
                     startActivityForResult(quizQuestionsIntent, 1);
-                    // TODO: Should change quizQuestionsIntent to modeSelectionIntent (single/multi player)
-                    // TODO: Multi-player should login/register/play-anon
                 } else {
                     invalidMessage("Username and password do not match.");
                 }

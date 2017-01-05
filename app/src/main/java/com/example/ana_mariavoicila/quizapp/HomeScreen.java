@@ -54,7 +54,9 @@ public class HomeScreen extends AppCompatActivity {
         buttonLeaderboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Showing leaderboard...");
+                Intent intentLeaderboard = new Intent(getApplicationContext(), Leaderboard.class);
+                intentLeaderboard.putExtra("caller", "HomeScreen");
+                startActivity(intentLeaderboard);
             }
         });
     }

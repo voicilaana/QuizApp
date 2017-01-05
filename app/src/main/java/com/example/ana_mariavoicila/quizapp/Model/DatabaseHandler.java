@@ -16,11 +16,13 @@ import java.lang.reflect.Array;
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "Quiz_Database";
 
     private static final String TABLE_USERS = "Users";
@@ -209,7 +211,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_USER_PW, user.getPassWord());
         values.put(KEY_USER_SCORE, user.getScore());
 
-        return this.getWritableDatabase().update(TABLE_USERS, values, KEY_USER_ID + "=?", new String[] { String.valueOf(user.getId()) });
+        return this.getWritableDatabase().update(TABLE_USERS, values, KEY_USER_NAME + "='" + user.getUserName() + "'", null);
     }
 
     public List<Question> getAllQuestions() {
@@ -267,5 +269,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 break;
             }
         }
+    }
+
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<User>();
+        String selectUsersQuery = "SELECT * FROM " + TABLE_USERS;
+        String whereStatement;
+
+        Log.e(DatabaseHandler.class.getName(), selectUsersQuery);
+        Cursor usersCursor = this.getReadableDatabase().rawQuery(selectUsersQuery, null);
+
+        if (usersCursor.moveToFirst()) {
+            do {
+                User user = new User();
+                user.setUserName(usersCursor.getString(usersCursor.getColumnIndex(KEY_USER_NAME)));
+                user.setPassWord(usersCursor.getString(usersCursor.getColumnIndex(KEY_USER_PW)));
+                user.setId(usersCursor.getInt(usersCursor.getColumnIndex(KEY_USER_ID)));
+                user.setScore(usersCursor.getInt(usersCursor.getColumnIndex(KEY_USER_SCORE)));
+                users.add(user);
+            } while (usersCursor.moveToNext());
+        }
+
+        Collections.sort(users, new Comparator<User>() {
+            @Override
+            public int compare(User a, User b) {
+                return a.getScore() < b.getScore() ? 1 : a.getScore() == b.getScore() ? 0 : -1;
+            }
+        });
+
+        return users;
     }
 }

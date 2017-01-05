@@ -41,4 +41,10 @@
     <!-- Finish activity -->
     <string name="scoreTitle">Score:</string>
     <string name="congrats_message">Congratulations!</string>
+
+    <string name="singleplayer">Single player</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="modeselection">Mode selection</string>
+    <string name="username_leaderboard">Username</string>
+    <string name="score_leaderboard">Score</string>
 </resources>

@@ -23,7 +23,9 @@
         <activity android:name=".Login" />
         <activity android:name=".Register" />
         <activity android:name=".QuizQuestions" />
-        <activity android:name=".Finish"></activity>
+        <activity android:name=".Finish" />
+        <activity android:name=".ModeSelection" />
+        <activity android:name=".Leaderboard"></activity>
     </application>
 
 </manifest>
