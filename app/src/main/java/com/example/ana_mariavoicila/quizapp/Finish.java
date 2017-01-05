@@ -1,5 +1,6 @@
 package com.example.ana_mariavoicila.quizapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,9 +24,8 @@ public class Finish extends AppCompatActivity {
     }
 
     private void initParams() {
-        tvScore = (TextView) findViewById(R.id.tvScoreFinish);
-        tvScore.setText(String.valueOf(DatabaseHandler.getInstance(getApplicationContext()).getUser().getScore()));
 
+        // TODO: add fragment with leaderboard for the users who played.
         buttonLeaderBoard = (Button) findViewById(R.id.buttonLeaderBoardFinish);
     }
 
@@ -33,7 +33,9 @@ public class Finish extends AppCompatActivity {
         buttonLeaderBoard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Showing leaderboard..");
+                Intent intentLeaderboard = new Intent(getApplicationContext(), Leaderboard.class);
+                intentLeaderboard.putExtra("caller", "Finish");
+                startActivity(intentLeaderboard);
             }
         });
     }

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public class Leaderboard extends AppCompatActivity {
 
+    private ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +31,13 @@ public class Leaderboard extends AppCompatActivity {
         // Construct the data source
         ArrayList<User> arrayOfUsers = DatabaseHandler.getInstance(getApplicationContext()).getAllUsers();
         UsersAdapter adapter = new UsersAdapter(this, arrayOfUsers);
-        ListView listView = (ListView) findViewById(R.id.lvLeaderboard);
+
+        listView = (ListView) findViewById(R.id.lvLeaderboard);
+        listView.setAdapter(adapter);
+    }
+
+    public void changeData(ArrayList<User> data) {
+        UsersAdapter adapter = new UsersAdapter(this, data);
         listView.setAdapter(adapter);
     }
 

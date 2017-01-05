@@ -197,12 +197,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    public User getUser(String username) {
+        User user = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_USERS + " WHERE " + KEY_USER_NAME + "='" + username + "'";
+        Log.e(DatabaseHandler.class.getName(), selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()) do {
+            user = new User();
+            user.setUserName(c.getString(c.getColumnIndex(KEY_USER_NAME)));
+            user.setPassWord(c.getString(c.getColumnIndex(KEY_USER_PW)));
+            user.setId(c.getInt(c.getColumnIndex(KEY_USER_ID)));
+            user.setScore(c.getInt(c.getColumnIndex(KEY_USER_SCORE)));
+        } while (c.moveToNext());
+
+        c.close();
+
+        return user;
+    }
+
     public User getUser() {
         if (!loggedInUsers.isEmpty()) {
             return loggedInUsers.get(loggedInUsers.size() - 1);
         }
 
         return null;
+    }
+
+    public List<User> getLoggedInUsers() {
+        return loggedInUsers;
     }
 
     public int updateScore(User user) {
@@ -262,13 +287,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return questions;
     }
 
-    public void logoutUser(String username) {
-        for (User user : loggedInUsers) {
-            if (user.getUserName().equals(username)) {
-                loggedInUsers.remove(user);
-                break;
-            }
-        }
+    public void logoutUsers() {
+        loggedInUsers.clear();
     }
 
     public ArrayList<User> getAllUsers() {

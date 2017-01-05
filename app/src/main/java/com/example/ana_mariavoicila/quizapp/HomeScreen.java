@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class HomeScreen extends AppCompatActivity {
 
-    private Button buttonLeaderboard, buttonLoginRegister, buttonStart;
+    private Button buttonLeaderboard, buttonRegister, buttonStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,17 +25,17 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void initParams() {
-        buttonLoginRegister = (Button) findViewById(R.id.buttonLoginRegister);
+        buttonRegister = (Button) findViewById(R.id.buttonRegister);
         buttonStart = (Button) findViewById(R.id.buttonStart);
         buttonLeaderboard = (Button) findViewById(R.id.buttonLeaderboard);
     }
 
     private void initListeners() {
-        buttonLoginRegister.setOnClickListener(new View.OnClickListener() {
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intentLogin = new Intent(getApplicationContext(), Login.class);
+                Intent intentLogin = new Intent(getApplicationContext(), Register.class);
                 intentLogin.putExtra("caller", "HomeScreen");
                 startActivity(intentLogin);
             }
@@ -45,9 +45,9 @@ public class HomeScreen extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intentStart = new Intent(getApplicationContext(), QuizQuestions.class);
-                intentStart.putExtra("caller", "HomeScreen");
-                startActivity(intentStart);
+                Intent intentModeS = new Intent(getApplicationContext(), ModeSelection.class);
+                intentModeS.putExtra("caller", "HomeScreen");
+                startActivity(intentModeS);
             }
         });
 

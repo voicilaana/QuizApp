@@ -11,14 +11,18 @@ import android.widget.Toast;
 
 import com.example.ana_mariavoicila.quizapp.Model.DatabaseHandler;
 import com.example.ana_mariavoicila.quizapp.Model.InputValidator;
+import com.example.ana_mariavoicila.quizapp.Model.User;
 
 public class Login extends AppCompatActivity {
 
     private EditText etUsername;
     private EditText etPassword;
     private Button buttonLogin;
-    private Button buttonRegister;
+    private Button buttonAnonymousStart;
     private Toast toast;
+    private TextView tvPlayerNumber;
+
+    private int numberOfUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,29 +30,36 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         initParams();
-        initListeners();
+        checkMode();
+    }
+
+    private void checkMode() {
+        String caller = getIntent().getStringExtra("caller");
+        if (caller.equals("ModeSelection")) {
+            String mode = getIntent().getStringExtra("mode");
+            if (mode.equals("singleplayer")) {
+                initSinglePlayerListeners();
+            } else if (mode.equals("multiplayer")) {
+                initMultiPlayerListeners();
+            }
+        }
     }
 
     private void initParams() {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
-        buttonRegister = (Button) findViewById(R.id.buttonRegister);
+        buttonAnonymousStart = (Button) findViewById(R.id.buttonAnonymousStart);
+        tvPlayerNumber = (TextView) findViewById(R.id.tvPlayerNumber);
+        tvPlayerNumber.setText("Player 1");
 
         toast = Toast.makeText(this, "message", Toast.LENGTH_LONG);
+
+        // Number of players allowed to play the game in multiplayer mode.
+        numberOfUsers = 2;
     }
 
-    private void initListeners() {
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(getApplicationContext(), Register.class);
-                registerIntent.putExtra("caller", "Login");
-                startActivityForResult(registerIntent, 2);
-            }
-        });
-
+    private void initSinglePlayerListeners() {
         buttonLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -61,21 +72,85 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+        buttonAnonymousStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
+                quizQuestionsIntent.putExtra("caller", "Anonymous");
+                startActivityForResult(quizQuestionsIntent, 1);
+            }
+        });
+    }
+
+    private void resetViewForNewUser() {
+        etUsername.setText("");
+        etPassword.setText("");
+    }
+
+    private void initMultiPlayerListeners() {
+        buttonLogin.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(DatabaseHandler.getInstance(getApplicationContext()).validCredentials(etUsername.getText().toString(), etPassword.getText().toString())) {
+                    tvPlayerNumber.setText("Player " + DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1);
+
+                    resetViewForNewUser();
+
+                    if (numberOfUsers == DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size()) {
+                        Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
+                        quizQuestionsIntent.putExtra("caller", "Login");
+                        quizQuestionsIntent.putExtra("number_of_users", numberOfUsers);
+                        startActivityForResult(quizQuestionsIntent, 1);
+                    }
+                } else {
+                    invalidMessage("Username and password do not match.");
+                }
+            }
+        });
+
+        buttonAnonymousStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvPlayerNumber.setText("Player " + (DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1));
+
+                resetViewForNewUser();
+                generateRandomUser();
+
+                if (numberOfUsers == DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size()) {
+                    Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
+                    quizQuestionsIntent.putExtra("caller", "Login");
+                    quizQuestionsIntent.putExtra("number_of_users", numberOfUsers);
+                    startActivityForResult(quizQuestionsIntent, 1);
+                }
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 2) {
-            etUsername.setText(data.getStringExtra("USERNAME"));
-            etPassword.setText(data.getStringExtra("PASSWORD"));
-            buttonRegister.setEnabled(false);
-        } else if (requestCode == 1) {
-            DatabaseHandler.getInstance(getApplicationContext()).logoutUser(etUsername.getText().toString());
+        if (requestCode == 1) {
+            DatabaseHandler.getInstance(getApplicationContext()).logoutUsers();
             etUsername.setText("");
             etPassword.setText("");
+            finish();
         }
+    }
+
+    private User generateRandomUser() {
+        User user = new User("anon-" + (int)(10000 * Math.random() + 100), "default-password");
+
+        while (!DatabaseHandler.getInstance(getApplicationContext()).isValidUsername(user.getUserName())) {
+            user.setUserName("anon-" + (int)(10000 * Math.random() + 100));
+        }
+
+        DatabaseHandler.getInstance(getApplicationContext()).addUser(user);
+        DatabaseHandler.getInstance(getApplicationContext()).validCredentials(user.getUserName(), user.getPassWord());
+        user = DatabaseHandler.getInstance(getApplicationContext()).getUser(user.getUserName());
+
+        return user;
     }
 
     private void invalidMessage(String errorMsg) {

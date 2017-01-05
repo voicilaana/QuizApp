@@ -17,7 +17,6 @@ public class Register extends AppCompatActivity {
     private EditText etPassword;
     private EditText etPasswordConfirmed;
     private EditText etUsername;
-    private EditText etName;
     private Button buttonRegister;
 
     private Toast toast;
@@ -43,9 +42,6 @@ public class Register extends AppCompatActivity {
                     User newUser = new User(etUsername.getText().toString(), etPassword.getText().toString());
                     dataBase.addUser(newUser);
 
-//                    Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
-//                    quizQuestionsIntent.putExtra("caller", "Register");
-//                    startActivity(quizQuestionsIntent);
                     Intent intent = new Intent();
                     intent.putExtra("USERNAME", newUser.getUserName());
                     intent.putExtra("PASSWORD", newUser.getPassWord());
@@ -63,7 +59,6 @@ public class Register extends AppCompatActivity {
         dataBase = DatabaseHandler.getInstance(getApplicationContext());
         etPasswordConfirmed = (EditText) findViewById(R.id.etPasswordConfirm);
         etPassword = (EditText) findViewById(R.id.etPassword);
-        etName = (EditText) findViewById(R.id.etName);
         etUsername = (EditText) findViewById(R.id.etUserName);
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
     }
@@ -80,11 +75,6 @@ public class Register extends AppCompatActivity {
         }
 
         if (!(dataBase.isValidUsername(etUsername.getText().toString()))) message = "Username taken.";
-
-        if (inputValidatorHelper.isNullOrEmpty (etName.getText().toString())){
-            message = "First name cannot be empty.";
-            return false;
-        }
 
         if (inputValidatorHelper.isValidPassword (etPassword.getText().toString(), patternKey)) {
             if (patternKey) {

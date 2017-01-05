@@ -20,25 +20,6 @@
         android:textSize="14sp" />
 
     <TextView
-        android:text="@string/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvScoreFinish"
-        android:textSize="150sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:text="@string/scoreTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvScoreTitle"
-        android:textSize="36sp"
-        android:layout_above="@+id/tvScoreFinish"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
         android:text="@string/congrats_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

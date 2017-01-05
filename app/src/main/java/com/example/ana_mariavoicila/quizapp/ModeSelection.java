@@ -23,7 +23,10 @@ public class ModeSelection extends AppCompatActivity {
         buttonSinglePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Single player mode starting..");
+            Intent intentLogin = new Intent(getApplicationContext(), Login.class);
+            intentLogin.putExtra("caller", "ModeSelection");
+            intentLogin.putExtra("mode", "singleplayer");
+            startActivity(intentLogin);
             }
         });
 
@@ -31,7 +34,10 @@ public class ModeSelection extends AppCompatActivity {
         buttonMultiPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Multi player mode starting..");
+            Intent intentLogin = new Intent(getApplicationContext(), Login.class);
+            intentLogin.putExtra("caller", "ModeSelection");
+            intentLogin.putExtra("mode", "multiplayer");
+            startActivity(intentLogin);
             }
         });
     }

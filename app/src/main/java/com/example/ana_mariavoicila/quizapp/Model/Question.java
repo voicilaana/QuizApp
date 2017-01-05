@@ -54,4 +54,15 @@ public class Question {
     public void setAnswered(boolean value) {
         answered = value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Question question1 = (Question) o;
+
+        return question != null ? question.equals(question1.question) : question1.question == null;
+
+    }
 }

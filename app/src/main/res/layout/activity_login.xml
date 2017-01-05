@@ -45,11 +45,21 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="@string/register"
+        android:text="@string/buttonAnonymousStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonRegister"
+        android:id="@+id/buttonAnonymousStart"
         android:layout_below="@+id/buttonLogin"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="@string/playernumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvPlayerNumber"
+        android:layout_marginTop="18dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/buttonAnonymousStart"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

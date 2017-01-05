@@ -30,7 +30,10 @@ public class QuizQuestions extends AppCompatActivity {
     private Spinner spinnerQuestions;
 
     private List<Question> listQuestions;
-    private User user;
+    private List<Question> allQuestions;
+    private List<User> users;
+    private User currentUser;
+    private int currentUserIndex;
     private int currentQuestionIndex;
 
     private Toast toast;
@@ -44,17 +47,13 @@ public class QuizQuestions extends AppCompatActivity {
         initListeners();
     }
 
-    private void finishQuiz() {
-        DatabaseHandler.getInstance(getApplicationContext()).updateScore(user);
-
-        Intent intentFinish = new Intent(getApplicationContext(), Finish.class);
-        intentFinish.putExtra("caller", "QuizQuestions");
-        startActivity(intentFinish);
-    }
-
     private void initParams() {
-        toast = Toast.makeText(this, "message", Toast.LENGTH_LONG);
         currentQuestionIndex = 0;
+        currentUserIndex = 0;
+        users = DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers();
+        currentUser = users.get(currentUserIndex);
+
+        toast = Toast.makeText(this, "message", Toast.LENGTH_LONG);
         listButtonAnswers = new ArrayList<Button>();
 
         tvQuestion = (TextView) findViewById(R.id.tvQuestion);
@@ -70,20 +69,13 @@ public class QuizQuestions extends AppCompatActivity {
         listButtonAnswers.add((Button) findViewById(R.id.buttonAnswer3));
         listButtonAnswers.add((Button) findViewById(R.id.buttonAnswer4));
 
-        user = DatabaseHandler.getInstance(getApplicationContext()).getUser();
-
-        String caller = getIntent().getStringExtra("caller");
-        if (user == null || caller.equals("HomeScreen")) {
-            generateRandomUser();
-        } else {
-            System.err.println("Caller or user undefined for QuizQuestions.");
-        }
-
-        listQuestions = DatabaseHandler.getInstance(getApplicationContext()).getAllQuestions();
+        allQuestions = DatabaseHandler.getInstance(getApplicationContext()).getAllQuestions();
+        listQuestions = new ArrayList<Question>();
+        listQuestions = getRandomQuestions();
         setSpinnerData();
 
-        tvUsername.setText(user.getUserName());
-        tvScore.setText(String.valueOf(user.getScore()));
+        tvUsername.setText(currentUser.getUserName());
+        tvScore.setText(String.valueOf(currentUser.getScore()));
         changeQuestion(currentQuestionIndex);
     }
 
@@ -93,12 +85,12 @@ public class QuizQuestions extends AppCompatActivity {
             public void onClick(View view) {
                 if (!listQuestions.isEmpty()) {
                     if (currentQuestionIndex < listQuestions.size() && currentQuestionIndex >= 0 && questionsNotAnswered()) {
-                            listQuestions.get(currentQuestionIndex).setAnswered(true);
-                            currentQuestionIndex = getNextQuestionNotAnswered();
-                            changeQuestion(currentQuestionIndex);
+                        listQuestions.get(currentQuestionIndex).setAnswered(true);
+                        currentQuestionIndex = getNextQuestionNotAnswered();
+                        changeQuestion(currentQuestionIndex);
                     } else {
                         showMessage("No more questions to follow!");
-                        finishQuiz();
+                        finishRound();
                     }
                 } else {
                     showMessage("No questions to be skipped!");
@@ -125,23 +117,7 @@ public class QuizQuestions extends AppCompatActivity {
             }
         });
 
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentQuestionIndex = getNextQuestionNotAnswered();
-                if (currentQuestionIndex != -1) {
-                    spinnerQuestions.setSelection(currentQuestionIndex);
-                } else {
-                    buttonNext.setText("Finish");
-                    buttonNext.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            finishQuiz();
-                        }
-                    });
-                }
-            }
-        });
+        initButtonNext();
 
         spinnerQuestions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -157,15 +133,73 @@ public class QuizQuestions extends AppCompatActivity {
         });
     }
 
-    private void generateRandomUser() {
-        user = new User("anon-" + (int)(10000 * Math.random() + 100), "default-password");
+    private void initButtonNext() {
+        buttonNext.setText("Next");
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentQuestionIndex = getNextQuestionNotAnswered();
+                if (currentQuestionIndex != -1) {
+                    spinnerQuestions.setSelection(currentQuestionIndex);
+                } else {
+                    buttonNext.setText("Finish");
+                    buttonNext.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finishRound();
+                        }
+                    });
+                }
+            }
+        });
+    }
 
-        while (!DatabaseHandler.getInstance(getApplicationContext()).isValidUsername(user.getUserName())) {
-            user.setUserName("anon-" + (int)(10000 * Math.random() + 100));
+    private void finishRound() {
+        DatabaseHandler.getInstance(getApplicationContext()).updateScore(currentUser);
+
+        if (currentUser.equals(users.get(users.size() - 1))) {
+            finishQuiz();
+        } else {
+            resetForNextPlayer();
+        }
+    }
+
+    private void resetForNextPlayer() {
+        currentUser = users.get(++currentUserIndex);
+        listQuestions = getRandomQuestions();
+        setSpinnerData();
+
+        tvUsername.setText(currentUser.getUserName());
+        tvScore.setText(String.valueOf(currentUser.getScore()));
+        currentQuestionIndex = 0;
+        changeQuestion(currentQuestionIndex);
+
+        initButtonNext();
+    }
+
+    private void finishQuiz() {
+        Intent intentFinish = new Intent(getApplicationContext(), Finish.class);
+        intentFinish.putExtra("caller", "QuizQuestions");
+        startActivity(intentFinish);
+    }
+
+    private List<Question> getRandomQuestions() {
+        List<Question> questions = new ArrayList<Question>();
+        boolean notEnough = true;
+        int randomIndex = 0;
+
+        while (notEnough) {
+            if (!listQuestions.contains(allQuestions.get(randomIndex))) {
+                questions.add(allQuestions.get(randomIndex));
+            }
+            randomIndex = (int) ((allQuestions.size() - 1) * Math.random());
+
+            if (questions.size() == 5) {
+                notEnough = false;
+            }
         }
 
-        DatabaseHandler.getInstance(getApplicationContext()).addUser(user);
-        DatabaseHandler.getInstance(getApplicationContext()).validCredentials(user.getUserName(), user.getPassWord());
+        return questions;
     }
 
     protected void changeQuestion(int index) {
@@ -277,8 +311,8 @@ public class QuizQuestions extends AppCompatActivity {
 
                 if (isCorrect) {
                     buttonAnswer.setBackgroundColor(Color.GREEN);
-                    user.setScore(user.getScore() + 1);
-                    tvScore.setText(String.valueOf(user.getScore()));
+                    currentUser.setScore(currentUser.getScore() + 1);
+                    tvScore.setText(String.valueOf(currentUser.getScore()));
 
                     disableButtons();
                 } else {
