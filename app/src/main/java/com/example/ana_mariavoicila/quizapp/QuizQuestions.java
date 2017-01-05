@@ -1,5 +1,6 @@
 package com.example.ana_mariavoicila.quizapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.provider.ContactsContract;
@@ -35,6 +36,7 @@ public class QuizQuestions extends AppCompatActivity {
     private User currentUser;
     private int currentUserIndex;
     private int currentQuestionIndex;
+    private int numberOfQuestionsPerRound;
 
     private Toast toast;
 
@@ -47,14 +49,16 @@ public class QuizQuestions extends AppCompatActivity {
         initListeners();
     }
 
+    @SuppressLint("ShowToast")
     private void initParams() {
+        numberOfQuestionsPerRound = 7;
         currentQuestionIndex = 0;
         currentUserIndex = 0;
         users = DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers();
         currentUser = users.get(currentUserIndex);
 
         toast = Toast.makeText(this, "message", Toast.LENGTH_LONG);
-        listButtonAnswers = new ArrayList<Button>();
+        listButtonAnswers = new ArrayList<>();
 
         tvQuestion = (TextView) findViewById(R.id.tvQuestion);
         tvScore = (TextView) findViewById(R.id.tvScore);
@@ -70,7 +74,7 @@ public class QuizQuestions extends AppCompatActivity {
         listButtonAnswers.add((Button) findViewById(R.id.buttonAnswer4));
 
         allQuestions = DatabaseHandler.getInstance(getApplicationContext()).getAllQuestions();
-        listQuestions = new ArrayList<Question>();
+        listQuestions = new ArrayList<>();
         listQuestions = getRandomQuestions();
         setSpinnerData();
 
@@ -102,14 +106,19 @@ public class QuizQuestions extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!listQuestions.isEmpty()) {
-                    listQuestions.get(currentQuestionIndex).setAnswered(true);
+                    if (currentQuestionIndex < listQuestions.size() && currentQuestionIndex >= 0 && questionsNotAnswered()) {
+                        listQuestions.get(currentQuestionIndex).setAnswered(true);
 
-                    for (int i = 0; i < listButtonAnswers.size(); i++) {
-                        if (i == listQuestions.get(currentQuestionIndex).getIndexCorrectAnswer()) {
-                            listButtonAnswers.get(i).setBackgroundColor(Color.GREEN);
+                        for (int i = 0; i < listButtonAnswers.size(); i++) {
+                            if (i == listQuestions.get(currentQuestionIndex).getIndexCorrectAnswer()) {
+                                listButtonAnswers.get(i).setBackgroundColor(Color.GREEN);
+                            }
+
+                            listButtonAnswers.get(i).setEnabled(false);
                         }
-
-                        listButtonAnswers.get(i).setEnabled(false);
+                    } else {
+                        showMessage("No more questions to cheat!");
+                        finishRound();
                     }
                 } else {
                     showMessage("No questions to be cheated!");
@@ -128,13 +137,13 @@ public class QuizQuestions extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                return;
+                // ...
             }
         });
     }
 
     private void initButtonNext() {
-        buttonNext.setText("Next");
+        buttonNext.setText(R.string.nextButton);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +151,7 @@ public class QuizQuestions extends AppCompatActivity {
                 if (currentQuestionIndex != -1) {
                     spinnerQuestions.setSelection(currentQuestionIndex);
                 } else {
-                    buttonNext.setText("Finish");
+                    buttonNext.setText(R.string.finishButton);
                     buttonNext.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -180,11 +189,13 @@ public class QuizQuestions extends AppCompatActivity {
     private void finishQuiz() {
         Intent intentFinish = new Intent(getApplicationContext(), Finish.class);
         intentFinish.putExtra("caller", "QuizQuestions");
+        DatabaseHandler.getInstance(getApplicationContext()).setLeaderboardData(users);
         startActivity(intentFinish);
+        finish();
     }
 
     private List<Question> getRandomQuestions() {
-        List<Question> questions = new ArrayList<Question>();
+        List<Question> questions = new ArrayList<>();
         boolean notEnough = true;
         int randomIndex = 0;
 
@@ -194,7 +205,7 @@ public class QuizQuestions extends AppCompatActivity {
             }
             randomIndex = (int) ((allQuestions.size() - 1) * Math.random());
 
-            if (questions.size() == 5) {
+            if (questions.size() == numberOfQuestionsPerRound) {
                 notEnough = false;
             }
         }
@@ -225,13 +236,13 @@ public class QuizQuestions extends AppCompatActivity {
     }
 
     private void setSpinnerData() {
-        ArrayList<String> questionsString = new ArrayList<String>();
+        ArrayList<String> questionsString = new ArrayList<>();
 
         for (Question q : listQuestions) {
             questionsString.add(q.getQuestion());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, questionsString);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, questionsString);
         spinnerQuestions.setAdapter(adapter);
         spinnerQuestions.setSelection(currentQuestionIndex);
     }
@@ -274,7 +285,7 @@ public class QuizQuestions extends AppCompatActivity {
         private int correctId;
         private int questionId;
 
-        public AnswerButtonListener(boolean isCorrect, boolean isAnswered, int correctId, int questionId) {
+        AnswerButtonListener(boolean isCorrect, boolean isAnswered, int correctId, int questionId) {
             this.isCorrect = isCorrect;
             this.isAnswered = isAnswered;
             this.correctId = correctId;

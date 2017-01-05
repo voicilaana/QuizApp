@@ -17,50 +17,9 @@ import java.util.ArrayList;
 
 public class Leaderboard extends AppCompatActivity {
 
-    private ListView listView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
-
-        init();
-    }
-
-    private void init() {
-        // Construct the data source
-        ArrayList<User> arrayOfUsers = DatabaseHandler.getInstance(getApplicationContext()).getAllUsers();
-        UsersAdapter adapter = new UsersAdapter(this, arrayOfUsers);
-
-        listView = (ListView) findViewById(R.id.lvLeaderboard);
-        listView.setAdapter(adapter);
-    }
-
-    public void changeData(ArrayList<User> data) {
-        UsersAdapter adapter = new UsersAdapter(this, data);
-        listView.setAdapter(adapter);
-    }
-
-    private class UsersAdapter extends ArrayAdapter<User> {
-        public UsersAdapter(Context context, ArrayList<User> users) {
-            super(context, 0, users);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            User user = getItem(position);
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_user, parent, false);
-            }
-
-            TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername_leaderboard);
-            TextView tvScore = (TextView) convertView.findViewById(R.id.tvScore_leaderboard);
-
-            tvUsername.setText(user.getUserName());
-            tvScore.setText(String.valueOf(user.getScore()));
-
-            return convertView;
-        }
     }
 }

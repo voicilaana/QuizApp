@@ -40,14 +40,18 @@
 
     <!-- Finish activity -->
     <string name="scoreTitle">Score:</string>
-    <string name="congrats_message">Congratulations!</string>
+    <string name="congrats_message">Your score:</string>
 
     <string name="singleplayer">Single player</string>
-    <string name="multiplayer">Multiplayer</string>
-    <string name="modeselection">Mode selection</string>
+    <string name="multiplayer">Multi player</string>
+    <string name="modeselection">Quiz Mode</string>
     <string name="username_leaderboard">Username</string>
     <string name="score_leaderboard">Score</string>
     <string name="buttonAnonymousStart">Anonymous Start</string>
     <string name="playernumber">Player 1</string>
     <string name="confirmpw">Confirm Password</string>
+    <string name="finishButton">Finish</string>
+    <string name="nextButton">Next</string>
+    <string name="tvDefaultPlayerNumber">Player 1</string>
+    <string name="playerString">"Player "</string>
 </resources>

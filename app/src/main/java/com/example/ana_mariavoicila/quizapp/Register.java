@@ -1,5 +1,6 @@
 package com.example.ana_mariavoicila.quizapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (validate()) {
+                if (validate(true)) {
                     User newUser = new User(etUsername.getText().toString(), etPassword.getText().toString());
                     dataBase.addUser(newUser);
 
@@ -54,6 +55,7 @@ public class Register extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("ShowToast")
     private void initParams() {
         toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         dataBase = DatabaseHandler.getInstance(getApplicationContext());
@@ -63,18 +65,20 @@ public class Register extends AppCompatActivity {
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
     }
 
-    private boolean validate() {
+    private boolean validate(boolean patternKey) {
 
         message = "Success!";
         InputValidator inputValidatorHelper = new InputValidator();
-        boolean patternKey = true;
 
         if (inputValidatorHelper.isNullOrEmpty(etUsername.getText().toString())){
             message = "Username cannot be empty.";
             return false;
         }
 
-        if (!(dataBase.isValidUsername(etUsername.getText().toString()))) message = "Username taken.";
+        if (!(dataBase.isValidUsername(etUsername.getText().toString()))) {
+            message = "Username taken.";
+            return false;
+        }
 
         if (inputValidatorHelper.isValidPassword (etPassword.getText().toString(), patternKey)) {
             if (patternKey) {

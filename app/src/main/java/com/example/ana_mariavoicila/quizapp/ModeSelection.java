@@ -27,6 +27,7 @@ public class ModeSelection extends AppCompatActivity {
             intentLogin.putExtra("caller", "ModeSelection");
             intentLogin.putExtra("mode", "singleplayer");
             startActivity(intentLogin);
+            finish();
             }
         });
 
@@ -38,6 +39,7 @@ public class ModeSelection extends AppCompatActivity {
             intentLogin.putExtra("caller", "ModeSelection");
             intentLogin.putExtra("mode", "multiplayer");
             startActivity(intentLogin);
+            finish();
             }
         });
     }

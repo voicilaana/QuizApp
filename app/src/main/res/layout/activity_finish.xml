@@ -28,4 +28,12 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" />
+
+    <fragment
+        android:id="@+id/fragmentLeaderboard"
+        android:name="com.example.ana_mariavoicila.quizapp.LeaderboardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        tools:layout="@layout/item_user" />
 </RelativeLayout>

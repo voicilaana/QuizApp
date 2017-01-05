@@ -1,5 +1,6 @@
 package com.example.ana_mariavoicila.quizapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,13 +46,14 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    @SuppressLint({"ShowToast"})
     private void initParams() {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonAnonymousStart = (Button) findViewById(R.id.buttonAnonymousStart);
         tvPlayerNumber = (TextView) findViewById(R.id.tvPlayerNumber);
-        tvPlayerNumber.setText("Player 1");
+        tvPlayerNumber.setText(R.string.tvDefaultPlayerNumber);
 
         toast = Toast.makeText(this, "message", Toast.LENGTH_LONG);
 
@@ -67,6 +69,7 @@ public class Login extends AppCompatActivity {
                     Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
                     quizQuestionsIntent.putExtra("caller", "Login");
                     startActivityForResult(quizQuestionsIntent, 1);
+                    finish();
                 } else {
                     invalidMessage("Username and password do not match.");
                 }
@@ -76,16 +79,21 @@ public class Login extends AppCompatActivity {
         buttonAnonymousStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                generateRandomUser();
+
                 Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
                 quizQuestionsIntent.putExtra("caller", "Anonymous");
                 startActivityForResult(quizQuestionsIntent, 1);
+                finish();
             }
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void resetViewForNewUser() {
         etUsername.setText("");
         etPassword.setText("");
+        tvPlayerNumber.setText(String.format("%s %d", R.string.playerString, DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1));
     }
 
     private void initMultiPlayerListeners() {
@@ -93,8 +101,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(DatabaseHandler.getInstance(getApplicationContext()).validCredentials(etUsername.getText().toString(), etPassword.getText().toString())) {
-                    tvPlayerNumber.setText("Player " + DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1);
-
                     resetViewForNewUser();
 
                     if (numberOfUsers == DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size()) {
@@ -102,6 +108,7 @@ public class Login extends AppCompatActivity {
                         quizQuestionsIntent.putExtra("caller", "Login");
                         quizQuestionsIntent.putExtra("number_of_users", numberOfUsers);
                         startActivityForResult(quizQuestionsIntent, 1);
+                        finish();
                     }
                 } else {
                     invalidMessage("Username and password do not match.");
@@ -112,16 +119,15 @@ public class Login extends AppCompatActivity {
         buttonAnonymousStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvPlayerNumber.setText("Player " + (DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size() + 1));
-
-                resetViewForNewUser();
                 generateRandomUser();
+                resetViewForNewUser();
 
                 if (numberOfUsers == DatabaseHandler.getInstance(getApplicationContext()).getLoggedInUsers().size()) {
                     Intent quizQuestionsIntent = new Intent(getApplicationContext(), QuizQuestions.class);
                     quizQuestionsIntent.putExtra("caller", "Login");
                     quizQuestionsIntent.putExtra("number_of_users", numberOfUsers);
                     startActivityForResult(quizQuestionsIntent, 1);
+                    finish();
                 }
             }
         });

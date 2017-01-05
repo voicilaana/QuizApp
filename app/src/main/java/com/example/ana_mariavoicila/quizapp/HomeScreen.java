@@ -10,6 +10,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.widget.Toast;
 
+import com.example.ana_mariavoicila.quizapp.Model.DatabaseHandler;
+
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -56,6 +58,7 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentLeaderboard = new Intent(getApplicationContext(), Leaderboard.class);
                 intentLeaderboard.putExtra("caller", "HomeScreen");
+                DatabaseHandler.getInstance(getApplicationContext()).setLeaderboardData(DatabaseHandler.getInstance(getApplicationContext()).getAllUsers());
                 startActivity(intentLeaderboard);
             }
         });

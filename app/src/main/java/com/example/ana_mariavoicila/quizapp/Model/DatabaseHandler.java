@@ -1,5 +1,6 @@
 package com.example.ana_mariavoicila.quizapp.Model;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -67,14 +68,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ");";
 
 
+    @SuppressLint("StaticFieldLeak")
     private static DatabaseHandler sInstance;
-    private List<User> loggedInUsers;
     private Context context;
+
+    private List<User> loggedInUsers;
+    private List<User> leaderboardData;
 
     private DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        loggedInUsers = new ArrayList<User>();
+        loggedInUsers = new ArrayList<>();
     }
 
     public static synchronized DatabaseHandler getInstance(Context context) {
@@ -164,11 +168,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         c.close();
 
-        if (dbUsername != null && dbUsername.equals(username)) {
-            return false;
-        }
-
-        return true;
+        return !(dbUsername != null && dbUsername.equals(username));
     }
 
     public boolean validCredentials(String userName, String password) {
@@ -240,14 +240,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<Question> getAllQuestions() {
-        List<Question> questions = new ArrayList<Question>();
+        List<Question> questions = new ArrayList<>();
         String selectQuestionsQuery = "SELECT * FROM " + TABLE_QUESTIONS;
         String selectAnswersQuery = "SELECT * FROM " + TABLE_ANSWERS;
         String whereStatement;
 
         Log.e(DatabaseHandler.class.getName(), selectQuestionsQuery);
         Cursor qstC = this.getReadableDatabase().rawQuery(selectQuestionsQuery, null);
-        Cursor ansC = null;
+        Cursor ansC;
 
         if (qstC.moveToFirst()) {
             do {
@@ -258,17 +258,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Log.e(DatabaseHandler.class.getName(), selectQuestionsQuery);
                 whereStatement = " WHERE " + KEY_QUESTION_FK + "='" + qstC.getInt(qstC.getColumnIndex(KEY_QUESTION_ID)) + "'";
                 ansC = this.getReadableDatabase().rawQuery(selectAnswersQuery + whereStatement, null);
-                List<String> answers = new ArrayList<String>();
+                List<String> answers = new ArrayList<>();
 
                 if (ansC.moveToFirst()) {
                     do {
                         answers.add(ansC.getString(ansC.getColumnIndex(KEY_ANSWER)));
                     } while (ansC.moveToNext());
+                    ansC.close();
                 }
 
                 question.setAnswers(answers);
                 questions.add(question);
             } while (qstC.moveToNext());
+
+            qstC.close();
         }
 
         if (questions.isEmpty()) {
@@ -279,7 +282,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     private ArrayList<Question> getQuestionsFromFile() {
-        ArrayList<Question> questions = new ArrayList<Question>();
+        ArrayList<Question> questions;
         FileParser parser = new FileParser(context.getAssets());
 
         questions = parser.getQuestions();
@@ -292,7 +295,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<User> getAllUsers() {
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
         String selectUsersQuery = "SELECT * FROM " + TABLE_USERS;
         String whereStatement;
 
@@ -317,6 +320,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         });
 
+        usersCursor.close();
+
         return users;
+    }
+
+    public void setLeaderboardData(List<User> data) {
+        leaderboardData = data;
+    }
+
+    public List<User> getLeaderboardData() {
+        return leaderboardData;
     }
 }

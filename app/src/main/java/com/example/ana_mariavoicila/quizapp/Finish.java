@@ -3,6 +3,8 @@ package com.example.ana_mariavoicila.quizapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,8 +26,6 @@ public class Finish extends AppCompatActivity {
     }
 
     private void initParams() {
-
-        // TODO: add fragment with leaderboard for the users who played.
         buttonLeaderBoard = (Button) findViewById(R.id.buttonLeaderBoardFinish);
     }
 
@@ -35,8 +35,15 @@ public class Finish extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentLeaderboard = new Intent(getApplicationContext(), Leaderboard.class);
                 intentLeaderboard.putExtra("caller", "Finish");
+                DatabaseHandler.getInstance(getApplicationContext()).setLeaderboardData(DatabaseHandler.getInstance(getApplicationContext()).getAllUsers());
                 startActivity(intentLeaderboard);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DatabaseHandler.getInstance(getApplicationContext()).logoutUsers();
     }
 }
