@@ -28,7 +28,7 @@ public class FileParser {
 
                 Question q = new Question();
                 q.setQuestion(firstLineSplit[0]);
-                q.setIndexCorrectAnswer(Integer.parseInt(firstLineSplit[1]) - 1);
+                q.setIndexCorrectAnswer(Integer.valueOf(firstLineSplit[1].trim()) - 1);
 
                 for (int j = 0; j < secondLineSplit.length; j++) {
                     q.getAnswers().add(secondLineSplit[j].trim());
