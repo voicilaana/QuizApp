@@ -328,6 +328,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void setLeaderboardData(List<User> data) {
         leaderboardData = data;
     }
+
     public List<User> getLeaderboardData() {
         return leaderboardData;
     }

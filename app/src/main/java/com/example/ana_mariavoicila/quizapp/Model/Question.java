@@ -62,7 +62,6 @@ public class Question {
 
         Question question1 = (Question) o;
 
-        return question != null ? question.equals(question1.question) : question1.question == null;
-
+        return question.trim().equals(question1.question.trim());
     }
 }

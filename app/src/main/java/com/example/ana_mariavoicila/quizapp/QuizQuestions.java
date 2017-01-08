@@ -194,13 +194,14 @@ public class QuizQuestions extends AppCompatActivity {
     private List<Question> getRandomQuestions() {
         List<Question> questions = new ArrayList<>();
         boolean notEnough = true;
-        int randomIndex = 0;
+        int randomIndex;
 
         while (notEnough) {
+            randomIndex = (int) ((allQuestions.size() - 1) * Math.random());
+
             if (!listQuestions.contains(allQuestions.get(randomIndex))) {
                 questions.add(allQuestions.get(randomIndex));
             }
-            randomIndex = (int) ((allQuestions.size() - 1) * Math.random());
 
             if (questions.size() == numberOfQuestionsPerRound) {
                 notEnough = false;
